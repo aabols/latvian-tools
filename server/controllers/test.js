@@ -1,5 +1,5 @@
 const getTest = async (req, res) => {
-  const response = { message: "Test successful" };
+  const response = { message: "GET test successful" };
   res.json(response);
 };
 
