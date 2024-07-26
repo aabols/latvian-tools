@@ -25,5 +25,6 @@ jobs:
         run: ssh ${{secrets.SERVER_USER}}@${{secrets.SERVER_HOST}} "cd ${{secrets.SERVER_ROOT}} && npm install"
       - name: Stop server
         run: ssh ${{secrets.SERVER_USER}}@${{secrets.SERVER_HOST}} "cd ${{secrets.SERVER_ROOT}} && npx pm2 stop ${{secrets.SERVER_NAME}}"
+        continue-on-error: true
       - name: Start server
         run: ssh ${{secrets.SERVER_USER}}@${{secrets.SERVER_HOST}} "cd ${{secrets.SERVER_ROOT}} && npx pm2 start server/index.js --name ${{secrets.SERVER_NAME}}"
