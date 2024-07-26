@@ -19,6 +19,10 @@ jobs:
           echo "${{secrets.SSH_PRIVATE_KEY}}" > ~/.ssh/id_ed25519
           chmod 600 ~/.ssh/id_ed25519
           ssh-keyscan ${{secrets.SERVER_HOST}} >> ~/.ssh/known_hosts
+      - name: Create .env file from template
+        run: |
+          cp .env.template .env
+          sed -i "s/\${{SERVER_PORT}}/${{secrets.SERVER_PORT}}/g" .env
       - name: Deploy code to server
         run: rsync -av --delete ./ ${{secrets.SERVER_USER}}@${{secrets.SERVER_HOST}}:${{secrets.SERVER_ROOT}}
       - name: Install dependencies on server
