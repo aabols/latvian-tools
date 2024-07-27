@@ -27,7 +27,7 @@ jobs:
         run: ssh ${{secrets.SERVER_USER}}@${{secrets.SERVER_HOST}} "cd ${{secrets.SERVER_ROOT}} && npx pm2 stop ${{secrets.SERVER_NAME}}"
         continue-on-error: true
       - name: Deploy code to server
-        run: rsync -av --delete --exclude='*' --include-from='deployment-include.txt' ./ ${{secrets.SERVER_USER}}@${{secrets.SERVER_HOST}}:${{secrets.SERVER_ROOT}}
+        run: rsync -av --delete --files-from='deployment.txt' ./ ${{secrets.SERVER_USER}}@${{secrets.SERVER_HOST}}:${{secrets.SERVER_ROOT}}
       - name: Install dependencies on server
         run: ssh ${{secrets.SERVER_USER}}@${{secrets.SERVER_HOST}} "cd ${{secrets.SERVER_ROOT}} && npm install"
       - name: Start server
