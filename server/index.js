@@ -16,8 +16,8 @@ app.use(bodyParser.json());
 
 // ROUTES
 const root = express.Router();
-root.use('/app', clientRouter);
-root.use('/', testRouter);
+root.use('/test', testRouter);
+root.use('/', clientRouter);
 app.use('/', root);
 
 // LAUNCH APP
