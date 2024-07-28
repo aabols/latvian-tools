@@ -6,14 +6,55 @@ on:
       - dev
 
 jobs:
-  server:
-    name: Deploy server
+  build-client:
+    name: Build client
     runs-on: ubuntu-latest
     environment: DEV
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-      - name: Save private key
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '20'
+      - name: Install dependencies
+        run: cd client && npm install
+      - name: Build client
+        run: cd client && npm run build
+      - name: Upload built artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: client-build
+          path: client/build
+  stop-server:
+    needs: build-client
+    name: Stop server
+    runs-on: ubuntu-latest
+    environment: DEV
+    steps:
+      - name: Setup SSH
+        run: |
+          mkdir ~/.ssh
+          echo "${{secrets.SSH_PRIVATE_KEY}}" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          ssh-keyscan ${{secrets.SERVER_HOST}} >> ~/.ssh/known_hosts
+      - name: Stop server
+        run: ssh ${{secrets.SERVER_USER}}@${{secrets.SERVER_HOST}} "cd ${{secrets.SERVER_ROOT}} && npx pm2 stop ${{secrets.SERVER_NAME}}"
+        continue-on-error: true
+  deploy-server-and-client:
+    needs: stop-server
+    name: Deploy server and client
+    runs-on: ubuntu-latest
+    environment: DEV
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Download client artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: client-build
+          path: client/build
+      - name: Setup SSH
         run: |
           mkdir ~/.ssh
           echo "${{secrets.SSH_PRIVATE_KEY}}" > ~/.ssh/id_ed25519
@@ -23,12 +64,15 @@ jobs:
         run: |
           cp .env.template .env
           sed -i "s/{{SERVER_PORT}}/${{secrets.SERVER_PORT}}/g" .env
-      - name: Stop server
-        run: ssh ${{secrets.SERVER_USER}}@${{secrets.SERVER_HOST}} "cd ${{secrets.SERVER_ROOT}} && npx pm2 stop ${{secrets.SERVER_NAME}}"
-        continue-on-error: true
       - name: Deploy code to server
         run: rsync -arv --delete --files-from='deployment.txt' ./ ${{secrets.SERVER_USER}}@${{secrets.SERVER_HOST}}:${{secrets.SERVER_ROOT}}
       - name: Install dependencies on server
         run: ssh ${{secrets.SERVER_USER}}@${{secrets.SERVER_HOST}} "cd ${{secrets.SERVER_ROOT}} && npm install"
+  start-server:
+    needs: deploy-server-and-client
+    name: Start server
+    runs-on: ubuntu-latest
+    environment: DEV
+    steps:
       - name: Start server
         run: ssh ${{secrets.SERVER_USER}}@${{secrets.SERVER_HOST}} "cd ${{secrets.SERVER_ROOT}} && npx pm2 start server/index.js --name ${{secrets.SERVER_NAME}}"
