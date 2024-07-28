@@ -74,5 +74,11 @@ jobs:
     runs-on: ubuntu-latest
     environment: DEV
     steps:
+      - name: Setup SSH
+        run: |
+          mkdir ~/.ssh
+          echo "${{secrets.SSH_PRIVATE_KEY}}" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          ssh-keyscan ${{secrets.SERVER_HOST}} >> ~/.ssh/known_hosts
       - name: Start server
         run: ssh ${{secrets.SERVER_USER}}@${{secrets.SERVER_HOST}} "cd ${{secrets.SERVER_ROOT}} && npx pm2 start server/index.js --name ${{secrets.SERVER_NAME}}"
