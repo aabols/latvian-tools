@@ -4,6 +4,7 @@ const cors = require('cors');
 
 const config = require('./config');
 const testRouter = require('./routes/test');
+const clientRouter = require('./routes/client');
 
 // APP CONFIG
 const app = express();
@@ -15,6 +16,7 @@ app.use(bodyParser.json());
 
 // ROUTES
 const root = express.Router();
+root.use('/app', clientRouter);
 root.use('/', testRouter);
 app.use('/', root);
 
