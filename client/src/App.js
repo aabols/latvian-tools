@@ -1,9 +1,10 @@
 import './App.css';
+import Flashcards from './components/flashcards';
 
 function App() {
   return (
     <div className="App">
-      Hello, Latvian Tools!
+      <Flashcards />
     </div>
   );
 }

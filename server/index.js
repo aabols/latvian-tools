@@ -3,7 +3,6 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 
 const config = require('./config');
-const testRouter = require('./routes/test');
 const clientRouter = require('./routes/client');
 
 // APP CONFIG
@@ -16,8 +15,7 @@ app.use(bodyParser.json());
 
 // ROUTES
 const root = express.Router();
-root.use('/test', testRouter);
-root.use('/', clientRouter);
+root.use('/burti', clientRouter);
 app.use('/', root);
 
 // LAUNCH APP
