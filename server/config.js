@@ -13,9 +13,13 @@ const config = {
     database: process.env.DB_NAME || 'dev-db',
     username: process.env.DB_USER || 'root',
     password: process.env.DB_PASS || 'rootpw',
-    storage: process.env.DB_STORAGE || path.resolve(__dirname, 'db/dev-db.sqlite3'),
     seederStorage: 'sequelize'
   }
 };
+
+// CONFIGURE DB STORAGE IF REQUIRED
+if (config.db.dialect === 'sqlite') {
+  config.db.storage = process.env.DB_STORAGE || path.resolve(__dirname, 'db/dev-db.sqlite3');
+}
 
 module.exports = config;
