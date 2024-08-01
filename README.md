@@ -5,7 +5,7 @@ Collection of tools for learning Latvian.
 :::mermaid
 flowchart
 
-client["Client (react app)"] <--> server["Server (express)"] <--> db["Database (mysql)"]
+client["Client (react app)"] <--> server["Server (express)"] <--> orm["ORM (sequelize)"] <--> db["Database"]
 :::
 
 # Branching strategy
@@ -54,3 +54,16 @@ cherry-pick id:"f1" parent:"F1" tag:"test feat1"
 checkout main
 merge test tag:"release feat1 & feat2"
 :::
+
+# Database and ORM
+ORM using Sequelize. SQLite for local dev environment.
+
+## Sequelize CLI ([docs](https://sequelize.org/docs/v7/cli))
+Create a seed file:
+```
+npx sequelize-cli seed:generate --name my-seed
+```
+Execute a seed:
+```
+npx sequelize-cli db:seed:all
+```
