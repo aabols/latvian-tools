@@ -16,7 +16,7 @@ export default function Flashcards() {
   useEffect(() => {
     const fetchCards = async () => {
       try {
-        const res = await axios.get('/api/flashcards');
+        const res = await axios.get('/burti/api/flashcards');
         setCards(res.data);
       } catch (err) { } finally { }
     };
