@@ -78,7 +78,7 @@ jobs:
         run: ssh ${{secrets.SERVER_USER}}@${{secrets.SERVER_HOST}} "cd ${{secrets.SERVER_ROOT}} && npm install"
 
       - name: Migrate database
-        run: ssh ${{secrets.SERVER_USER}}@${{secrets.SERVER_HOST}} "cd ${{secrets.SERVER_ROOT}} && npm run db-migrate"
+        run: ssh ${{secrets.SERVER_USER}}@${{secrets.SERVER_HOST}} "source ~/.nvm/nvm.sh && nvm use default && cd ${{secrets.SERVER_ROOT}} && npm run db-migrate"
 
       - name: Seed database
         run: ssh ${{secrets.SERVER_USER}}@${{secrets.SERVER_HOST}} "cd ${{secrets.SERVER_ROOT}} && npm run db-seed"
