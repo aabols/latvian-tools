@@ -6,7 +6,7 @@ module.exports = (sequelize, DataTypes) => {
   Flashcard.init({
     id: {
       primaryKey: true,
-      type: DataTypes.UUIDV4,
+      type: DataTypes.UUID,
       defaultValue: sequelize.UUIDV4,
       allowNull: false
     },

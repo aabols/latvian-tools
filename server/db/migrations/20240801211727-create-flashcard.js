@@ -6,7 +6,7 @@ module.exports = {
     await queryInterface.createTable('Flashcards', {
       id: {
         primaryKey: true,
-        type: Sequelize.UUIDV4,
+        type: Sequelize.UUID,
         allowNull: false
       },
       caption: {
