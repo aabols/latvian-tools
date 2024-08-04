@@ -7,7 +7,7 @@
     "dev-server": "nodemon server/index.js",
     "dev-client": "cd client && npm run start",
     "db-seed": "cd server/db && sequelize-cli db:seed:all",
-    "db-unseed": "cd server/db && sequelize-cli db:seed:undo",
+    "db-unseed": "cd server/db && sequelize-cli db:seed:undo:all",
     "db-add-seeder": "cd server/db && sequelize-cli seed:generate --name new-seeder",
     "db-migrate": "cd server/db && sequelize-cli db:migrate",
     "db-add-migration": "cd server/db && sequelize-cli migration:generate --name new-migration",
