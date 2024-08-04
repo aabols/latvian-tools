@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
 import './index.css'
 import Flashcard from './flashcard';
+import { getFlashcards } from '../../_services/flashcardServices';
 
 const shuffle = (arr) => arr
   .map(value => ({ value, sort: Math.random() }))
@@ -9,37 +9,34 @@ const shuffle = (arr) => arr
   .map(({ value }) => value);
 
 export default function Flashcards() {
+  // STATES
   const [cards, setCards] = useState();
   const [deck, setDeck] = useState();
-  const [cardIndex, setCardIndex] = useState(0);
+  const [cardIndex, setCardIndex] = useState();
 
+  // EFFECTS
   useEffect(() => {
-    const fetchCards = async () => {
-      try {
-        const res = await axios.get('api/flashcards');
-        setCards(res.data);
-      } catch (err) { } finally { }
-    };
-
-    fetchCards();
+    getFlashcards()
+      .then(response => setCards(response.data));
   }, []);
 
   useEffect(() => {
     if (!cards) return;
+    if (cardIndex && cardIndex < cards.length) return;
     setDeck(shuffle(cards));
-  }, [cards])
+  }, [cardIndex, cards]);
 
+  useEffect(() => {
+    setCardIndex(0);
+  }, [deck]);
 
+  // HANDLERS
   const handleNext = (e) => {
-    if (cardIndex >= deck.length - 1) {
-      setDeck(shuffle(cards));
-      setCardIndex(0);
-      return;
-    }
     setCardIndex(i => i + 1);
   };
 
-  if (!cards || !deck) return null;
+  // COMPONENT
+  if (!cards || !deck || !deck[cardIndex]) return null;
 
   return (
     <div className='flashCardDeck'>
