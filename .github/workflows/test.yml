@@ -1,19 +1,19 @@
-name: DEV
+name: TEST
 
 on:
   push:
     branches:
-      - dev
+      - test
     paths-ignore:
       - '.github/workflows/**'
-      - '!.github/workflows/dev.yml'
+      - '!.github/workflows/test.yml'
 
 jobs:
 
   build-client:
     name: Build client
     runs-on: ubuntu-latest
-    environment: DEV
+    environment: TEST
     steps:
 
       - name: Checkout code
@@ -41,7 +41,7 @@ jobs:
     needs: build-client
     name: Deploy server and client
     runs-on: ubuntu-latest
-    environment: DEV
+    environment: TEST
     steps:
 
       - name: Checkout code
