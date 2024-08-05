@@ -4,6 +4,13 @@
   "description": "Tools for learning Latvian",
   "main": "index.js",
   "scripts": {
+    "dev-server": "nodemon server/index.js",
+    "dev-client": "cd client && npm run start",
+    "db-seed": "cd server/db && sequelize-cli db:seed:all",
+    "db-unseed": "cd server/db && sequelize-cli db:seed:undo:all",
+    "db-add-seeder": "cd server/db && sequelize-cli seed:generate --name new-seeder",
+    "db-migrate": "cd server/db && sequelize-cli db:migrate",
+    "db-add-migration": "cd server/db && sequelize-cli migration:generate --name new-migration",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -11,5 +18,21 @@
     "url": "latvian-tools"
   },
   "author": "Janis Abols",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.20.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "mysql2": "^3.11.0",
+    "path": "^0.12.7",
+    "pm2": "^5.4.2",
+    "sequelize": "^6.37.3",
+    "sequelize-cli": "^6.6.2",
+    "uuid": "^10.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.4",
+    "sqlite3": "^5.1.7"
+  }
 }
