@@ -3,7 +3,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 
 const config = require('./config');
-const clientRouter = require('./routes/client');
+const flashcardRouter = require('./routes/flashcards');
 const apiRouter = require('./routes/api');
 const db = require('./db/models');
 
@@ -18,8 +18,8 @@ app.use(bodyParser.json());
 // ROUTES
 const root = express.Router();
 root.use('/api', apiRouter);
-root.use('/', clientRouter);
-app.use('/burti', root);
+root.use('/burti', flashcardRouter);
+app.use('/', root);
 
 // LAUNCH APP
 db.sequelize.sync({ force: false });

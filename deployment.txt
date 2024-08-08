@@ -2,4 +2,4 @@ package.json
 package-lock.json
 .env
 server/
-client/build
+apps/flashcards/build
